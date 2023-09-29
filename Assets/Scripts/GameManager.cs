@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        Debug.Log(Cursor.lockState);
     }
 
     IEnumerator FpsCounter()
