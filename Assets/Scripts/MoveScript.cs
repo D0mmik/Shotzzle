@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,7 +10,6 @@ public class MoveScript : MonoBehaviour
     Rigidbody rb;
     InputSystem playerInput;
     Vector3 movementVelocity;
-
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -40,11 +36,13 @@ public class MoveScript : MonoBehaviour
     {
         Vector2 inputVector = playerInput.Player.Movement.ReadValue<Vector2>();
         float sprintMultiplier = playerInput.Player.Sprint.ReadValue<float>() != 0 ? sprintSpeed : 1;
-        movementVelocity = new Vector3( inputVector.x, 0f, inputVector.y) * (speed * sprintMultiplier);
+        Transform transform1 = transform;
+        movementVelocity = (transform1.forward * inputVector.y + transform1.right * inputVector.x) * (speed * sprintMultiplier);
+        movementVelocity.y = rb.velocity.y;
     }
 
     void FixedUpdate()
     {
-        rb.velocity = new Vector3(movementVelocity.x, rb.velocity.y, movementVelocity.z);
+        rb.velocity = movementVelocity;
     }
 }

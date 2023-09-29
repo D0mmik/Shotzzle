@@ -1,9 +1,5 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using TMPro;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -16,8 +12,10 @@ public class GameManager : MonoBehaviour
         StartCoroutine(nameof(FpsCounter));
     }
 
-    void Update()
+    void Start()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Debug.Log(Cursor.lockState);
     }
 
     IEnumerator FpsCounter()
