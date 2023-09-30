@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] int fpsCount = 100;
+    [SerializeField] int fpsCount = 60;
     [SerializeField] TMP_Text fpsCountText;
     void Awake()
     {
-        Application.targetFrameRate = fpsCount;
+        Application.targetFrameRate = 160;
         StartCoroutine(nameof(FpsCounter));
     }
 

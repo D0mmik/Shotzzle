@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -49,5 +50,19 @@ public class MoveScript : MonoBehaviour
     void FixedUpdate()
     {
         rb.velocity = movementVelocity;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.transform.tag == "JumpPad")
+        {
+            Debug.Log("Dominik");
+            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
+        }
     }
 }
