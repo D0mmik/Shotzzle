@@ -9,26 +9,30 @@ using Random = UnityEngine.Random;
 
 public class ShootingScript : MonoBehaviour
 {
-    [SerializeField] Transform shootPoint;
     [SerializeField] TMP_Text ammoText;
     [SerializeField] int ammoCount = 30;
+    [SerializeField] GameObject bulletImpact;
+    Transform shootPoint;
     InputSystem playerInput;
     RaycastHit hit;
-    private void Awake()
+    void Awake()
     {
         playerInput = new InputSystem();
         playerInput.Player.Enable();
         playerInput.Player.Shoot.performed += Shoot;
-        ammoText.text = ammoCount.ToString();
+        //ammoText.text = ammoCount.ToString();
+        shootPoint = Camera.main?.transform;
     }
 
-    private void Shoot(InputAction.CallbackContext obj)
+    void Shoot(InputAction.CallbackContext obj)
     {
         ammoCount--;
-        ammoText.text = ammoCount.ToString();
+        //ammoText.text = ammoCount.ToString();
         if (Physics.Raycast(shootPoint.position, shootPoint.forward, out hit, 100f))
         {
             hit.transform.GetComponent<JumpPad>()?.ActivateJumpPad();
+            GameObject clone = Instantiate(bulletImpact, hit.point, Quaternion.identity);
+            Destroy(clone, 3f);
             if (hit.rigidbody)
             {
                 //hit.rigidbody.maxLinearVelocity = 20;

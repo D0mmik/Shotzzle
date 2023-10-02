@@ -22,7 +22,7 @@ public class MouseLook : MonoBehaviour
         Vector2 mouseAxis = playerInput.Player.Look.ReadValue<Vector2>() * (Time.deltaTime * sensitivity);
         
         xRotation -= mouseAxis.y;
-        xRotation = Mathf.Clamp(xRotation, -65f, 65f);
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         yRotation += mouseAxis.x * 12;
 

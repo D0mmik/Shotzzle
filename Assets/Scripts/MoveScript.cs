@@ -52,16 +52,10 @@ public class MoveScript : MonoBehaviour
         rb.velocity = movementVelocity;
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnCollisionEnter(Collision other)
     {
-        
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        if (other.transform.tag == "JumpPad")
+        if (other.transform.CompareTag("JumpPad"))
         {
-            Debug.Log("Dominik");
             rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
         }
     }
