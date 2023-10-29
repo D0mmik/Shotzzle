@@ -4,20 +4,20 @@ using UnityEngine.InputSystem;
 
 public class MoveScript : MonoBehaviour
 {
-    [SerializeField] float speed = 1000f;
+    [SerializeField] Transform player;
+    [SerializeField] float speed = 10f;
     [SerializeField] float jumpForce = 5f;
-    [SerializeField] float sprintSpeed = 1.5f;
-    [SerializeField] float smoothInputSpeed = .4f;
+    [SerializeField] float groundDrag;
     bool isGrounded;
+    float horizontalInput;
+    float verticalInput;
     Rigidbody rb;
     InputSystem playerInput;
-    Vector3 movementVelocity;
-    Vector2 currentInputVector;
-    Vector2 smoothInputVector;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        rb.freezeRotation = true;
 
         playerInput = new InputSystem();
         playerInput.Player.Enable();
@@ -34,29 +34,45 @@ public class MoveScript : MonoBehaviour
     {
         isGrounded = Physics.Raycast(transform.position, Vector3.down, 1.1f);
 
+        PlayerInput();
+        SpeedControl();
+
+        rb.drag = isGrounded ? groundDrag : 0;
+    }
+
+    private void FixedUpdate()
+    {
         Movement();
+    }
+
+    private void PlayerInput()
+    {
+        Vector2 inputVector = playerInput.Player.Movement.ReadValue<Vector2>();
+        horizontalInput = inputVector.x;
+        verticalInput = inputVector.y;
     }
 
     void Movement()
     {
-        Vector2 inputVector = playerInput.Player.Movement.ReadValue<Vector2>();
-        currentInputVector = Vector2.SmoothDamp(currentInputVector, inputVector, ref smoothInputVector, smoothInputSpeed);
-        float sprintMultiplier = playerInput.Player.Sprint.ReadValue<float>() != 0 ? sprintSpeed : 1;
-        Transform transform1 = transform;
-        movementVelocity = (transform1.forward * currentInputVector.y + transform1.right * currentInputVector.x) * (speed * sprintMultiplier);
-        movementVelocity.y = rb.velocity.y;
+        Vector3 moveDirection = player.forward * verticalInput + player.right * horizontalInput;
+        rb.AddForce(moveDirection.normalized * (speed * 10f * (isGrounded ? 1 : 2)), ForceMode.Force);
     }
 
-    void FixedUpdate()
+    private void SpeedControl()
     {
-        rb.velocity = movementVelocity;
+        Vector3 flatVel = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
+        if (!(flatVel.magnitude > speed)) return;
+        
+        Vector3 limitedVel = flatVel.normalized * speed;
+        rb.velocity = new Vector3(limitedVel.x, rb.velocity.y, limitedVel.z);
+
     }
 
     void OnCollisionEnter(Collision other)
     {
         if (other.transform.CompareTag("JumpPad"))
         {
-            rb.AddForce(Vector3.up * 10, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * 15, ForceMode.Impulse);
         }
     }
 }
