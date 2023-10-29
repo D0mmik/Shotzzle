@@ -6,9 +6,12 @@ using UnityEngine;
 public class DoorButton : MonoBehaviour
 {
     public bool isButtonActivated;
+
+    [SerializeField] Material blueMaterial;
     public void Activate()
     {
-        Debug.Log("activated");
+        if (isButtonActivated) return;
+        GetComponent<Renderer>().material = blueMaterial;
         isButtonActivated = true;
     }
 }
