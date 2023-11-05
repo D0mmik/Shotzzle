@@ -80,6 +80,15 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""QuitGame"",
+                    ""type"": ""Button"",
+                    ""id"": ""b6791afd-5bbd-43f1-b2fb-7ce2eb9dbc0f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -192,6 +201,17 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
                     ""action"": ""Reload"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ca8f5fa7-895c-4710-bd85-e70d8f41f3ea"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""QuitGame"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -206,6 +226,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Shoot = m_Player.FindAction("Shoot", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
+        m_Player_QuitGame = m_Player.FindAction("QuitGame", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -273,6 +294,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Shoot;
     private readonly InputAction m_Player_Reload;
+    private readonly InputAction m_Player_QuitGame;
     public struct PlayerActions
     {
         private @InputSystem m_Wrapper;
@@ -283,6 +305,7 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Shoot => m_Wrapper.m_Player_Shoot;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
+        public InputAction @QuitGame => m_Wrapper.m_Player_QuitGame;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -310,6 +333,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @Reload.started += instance.OnReload;
             @Reload.performed += instance.OnReload;
             @Reload.canceled += instance.OnReload;
+            @QuitGame.started += instance.OnQuitGame;
+            @QuitGame.performed += instance.OnQuitGame;
+            @QuitGame.canceled += instance.OnQuitGame;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -332,6 +358,9 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
             @Reload.started -= instance.OnReload;
             @Reload.performed -= instance.OnReload;
             @Reload.canceled -= instance.OnReload;
+            @QuitGame.started -= instance.OnQuitGame;
+            @QuitGame.performed -= instance.OnQuitGame;
+            @QuitGame.canceled -= instance.OnQuitGame;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -357,5 +386,6 @@ public partial class @InputSystem: IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnShoot(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnQuitGame(InputAction.CallbackContext context);
     }
 }

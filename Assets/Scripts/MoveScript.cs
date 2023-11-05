@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class MoveScript : MonoBehaviour
 {
@@ -37,7 +38,7 @@ public class MoveScript : MonoBehaviour
         PlayerInput();
         SpeedControl();
 
-        rb.drag = isGrounded ? groundDrag : 0;
+        rb.drag = isGrounded ? groundDrag : 1;
     }
 
     private void FixedUpdate()
@@ -72,7 +73,17 @@ public class MoveScript : MonoBehaviour
     {
         if (other.transform.CompareTag("JumpPad"))
         {
-            rb.AddForce(Vector3.up * 15, ForceMode.Impulse);
+            rb.AddForce(Vector3.up * 23, ForceMode.Impulse);
+        }
+
+        if (other.transform.CompareTag("Teleport"))
+        {
+            this.gameObject.transform.position = other.gameObject.GetComponent<TeleportLocation>().teleportPosition.position;
+        }
+        
+        if (other.transform.CompareTag("Lava"))
+        {
+            SceneManager.LoadScene("Game");
         }
     }
 }

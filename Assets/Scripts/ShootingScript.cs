@@ -1,3 +1,4 @@
+using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,7 +11,7 @@ public class ShootingScript : MonoBehaviour
     Transform shootPoint;
     InputSystem playerInput;
     RaycastHit hit;
-    Animator animation;
+    Animator animationComponent;
     AudioSource audioSource;
     void Awake()
     {
@@ -19,9 +20,15 @@ public class ShootingScript : MonoBehaviour
         playerInput.Player.Shoot.performed += Shoot;
         playerInput.Player.Reload.performed += Reload;
         ammoText.text = ammoCount.ToString();
-        animation = GetComponent<Animator>();
+        animationComponent = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         shootPoint = Camera.main?.transform;
+    }
+
+    private void OnDisable()
+    {
+        playerInput.Player.Shoot.performed -= Shoot;
+        playerInput.Player.Reload.performed -= Reload;
     }
 
     private void Reload(InputAction.CallbackContext obj)
@@ -33,7 +40,7 @@ public class ShootingScript : MonoBehaviour
     void Shoot(InputAction.CallbackContext obj)
     {
         if (ammoCount == 0) return;
-        animation.SetTrigger("shooting");
+        animationComponent.SetTrigger("shooting");
         audioSource.Play();
         ammoCount--;
         ammoText.text = ammoCount.ToString();

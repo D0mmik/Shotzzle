@@ -10,32 +10,32 @@ public class JumpPad : MonoBehaviour
     [SerializeField] Material defaultMaterial;
     [SerializeField] bool isActivated;
     Material material;
-    Renderer renderer;
-    Collider collider;
+    Renderer rendererComponent;
+    Collider colliderComponent;
 
     void Start()
     {
-        renderer = GetComponent<Renderer>();
-        collider = GetComponent<Collider>();
-        defaultMaterial = renderer.material;
+        rendererComponent = GetComponent<Renderer>();
+        colliderComponent = GetComponent<Collider>();
+        defaultMaterial = rendererComponent.material;
     }
 
     public void ActivateJumpPad()
     {
         if (isActivated) return;
         isActivated = true;
-        renderer.material = jumpPadMaterial;
+        rendererComponent.material = jumpPadMaterial;
         transform.tag = "JumpPad";
-        collider.isTrigger = false;
+        colliderComponent.isTrigger = false;
         StartCoroutine(nameof(DeActivateJumpPad));
     }
 
     IEnumerator DeActivateJumpPad()
     {
         yield return new WaitForSeconds(3);
-        renderer.material = defaultMaterial;
+        rendererComponent.material = defaultMaterial;
         transform.tag = "Untagged";
-        collider.isTrigger = true;
+        colliderComponent.isTrigger = true;
         isActivated = false;
     }
 

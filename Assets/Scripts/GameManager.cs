@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] int fpsCount = 60;
     [SerializeField] TMP_Text fpsCountText;
     InputSystem playerInput;
     void Awake()
@@ -15,12 +14,12 @@ public class GameManager : MonoBehaviour
         StartCoroutine(nameof(FpsCounter));
         playerInput = new InputSystem();
         playerInput.Player.Enable();
-        playerInput.Player.Reload.performed += ReloadScene;
+        playerInput.Player.QuitGame.performed += QuitGame;
     }
 
-    private void ReloadScene(InputAction.CallbackContext obj)
+    private void QuitGame(InputAction.CallbackContext obj)
     {
-        SceneManager.LoadScene(0);
+        Application.Quit();
     }
 
     void Start()
@@ -30,7 +29,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator FpsCounter()
     {
-        while (true)
+        while(true)
         {
             fpsCountText.text = Mathf.Ceil(1f / Time.deltaTime).ToString();
             yield return new WaitForSeconds(0.1f);

@@ -58,6 +58,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "QuitGame",
+                    "type": "Button",
+                    "id": "b6791afd-5bbd-43f1-b2fb-7ce2eb9dbc0f",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -168,6 +177,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Reload",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ca8f5fa7-895c-4710-bd85-e70d8f41f3ea",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "QuitGame",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
