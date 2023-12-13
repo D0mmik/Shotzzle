@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class MoveScript : MonoBehaviour
 {
+    public ShootingScript shootingScript;
     [SerializeField] Transform player;
     [SerializeField] float speed = 10f;
     [SerializeField] float jumpForce = 5f;
@@ -23,6 +24,11 @@ public class MoveScript : MonoBehaviour
         playerInput = new InputSystem();
         playerInput.Player.Enable();
         playerInput.Player.Jump.performed += Jump;
+    }
+
+    private void OnDisable()
+    {
+        playerInput.Player.Jump.performed -= Jump;
     }
 
     void Jump(InputAction.CallbackContext context)
@@ -71,19 +77,22 @@ public class MoveScript : MonoBehaviour
 
     void OnCollisionEnter(Collision other)
     {
-        if (other.transform.CompareTag("JumpPad"))
+        switch (other.transform.tag)
         {
-            rb.AddForce(Vector3.up * 23, ForceMode.Impulse);
-        }
-
-        if (other.transform.CompareTag("Teleport"))
-        {
-            this.gameObject.transform.position = other.gameObject.GetComponent<TeleportLocation>().teleportPosition.position;
-        }
-        
-        if (other.transform.CompareTag("Lava"))
-        {
-            SceneManager.LoadScene("Game");
+            case "JumpPad":
+                rb.AddForce(Vector3.up * 23, ForceMode.Impulse);
+                break;
+            case "Teleport":
+                this.gameObject.transform.position =
+                    other.gameObject.GetComponent<TeleportLocation>().teleportPosition.position;
+                break;
+            case "Lava":
+                SceneManager.LoadScene("Game");
+                break;
+            case "AmmoPowerUp":
+                shootingScript.AddAmmo(10);
+                break;
+            
         }
     }
 }

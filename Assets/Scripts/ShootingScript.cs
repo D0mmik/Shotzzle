@@ -37,6 +37,12 @@ public class ShootingScript : MonoBehaviour
         ammoText.text = ammoCount.ToString();
     }
 
+    public void AddAmmo(int count)
+    {
+        ammoCount += count;
+        ammoText.text = ammoCount.ToString();
+    }
+
     void Shoot(InputAction.CallbackContext obj)
     {
         if (ammoCount == 0) return;

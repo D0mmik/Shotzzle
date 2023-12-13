@@ -7,6 +7,7 @@ public class DoorPuzzle : MonoBehaviour
 {
     [SerializeField] GameObject[] buttonsGO;
     Animator animator;
+    private static readonly int Door = Animator.StringToHash("OpenDoor");
 
     private void Awake()
     {
@@ -18,8 +19,16 @@ public class DoorPuzzle : MonoBehaviour
         foreach (GameObject button in buttonsGO)
         {
             if (!button.GetComponent<DoorButton>().isButtonActivated) return;
-            animator.SetTrigger("OpenDoor");
+            animator.SetBool(Door, true);
+            StartCoroutine(nameof(CloseDoor));
             break;
         }
+    }
+
+    IEnumerator CloseDoor()
+    {
+        yield return new WaitForSeconds(2);
+        animator.SetBool(Door, false);
+        Debug.Log("clossing door");
     }
 }
