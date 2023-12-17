@@ -89,10 +89,18 @@ public class MoveScript : MonoBehaviour
             case "Lava":
                 SceneManager.LoadScene("Game");
                 break;
+            
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        switch (other.transform.tag)
+        {
             case "AmmoPowerUp":
                 shootingScript.AddAmmo(10);
+                Destroy(other.gameObject);
                 break;
-            
         }
     }
 }

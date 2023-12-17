@@ -1,18 +1,21 @@
 using System;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ShootingScript : MonoBehaviour
 {
     [SerializeField] TMP_Text ammoText;
-    [SerializeField] int ammoCount = 30;
+    [SerializeField] int ammoCount;
+    [SerializeField] int maxAmmo = 30;
     [SerializeField] GameObject bulletImpact;
     Transform shootPoint;
     InputSystem playerInput;
     RaycastHit hit;
     Animator animationComponent;
     AudioSource audioSource;
+    private CubePattern cubePattern;
     void Awake()
     {
         playerInput = new InputSystem();
@@ -23,6 +26,8 @@ public class ShootingScript : MonoBehaviour
         animationComponent = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
         shootPoint = Camera.main?.transform;
+        AddAmmo(maxAmmo);
+        cubePattern = FindObjectOfType<CubePattern>();
     }
 
     private void OnDisable()
@@ -33,13 +38,13 @@ public class ShootingScript : MonoBehaviour
 
     private void Reload(InputAction.CallbackContext obj)
     {
-        ammoCount = 30;
-        ammoText.text = ammoCount.ToString();
+        AddAmmo(maxAmmo);
     }
 
     public void AddAmmo(int count)
     {
         ammoCount += count;
+        ammoCount = ammoCount > maxAmmo ? maxAmmo : ammoCount;
         ammoText.text = ammoCount.ToString();
     }
 
@@ -48,14 +53,25 @@ public class ShootingScript : MonoBehaviour
         if (ammoCount == 0) return;
         animationComponent.SetTrigger("shooting");
         audioSource.Play();
-        ammoCount--;
-        ammoText.text = ammoCount.ToString();
+        AddAmmo(-1);
         if (!Physics.Raycast(shootPoint.position, shootPoint.forward, out hit, 100f)) return;
         
         hit.transform.GetComponent<JumpPad>()?.ActivateJumpPad();
         hit.transform.GetComponent<DoorButton>()?.Activate();
         hit.transform.GetComponent<DoorPuzzle>()?.OpenDoor();
-            
+        
+        CubeInfo cubeInfo = hit.transform.GetComponent<CubeInfo>();
+        if (cubeInfo?.orderInSequence != null)
+        {   
+            if (!cubePattern.isPlayed)
+                cubePattern.StartCoroutinePatternGame();
+            else
+            {
+                int order = cubeInfo.orderInSequence;
+                cubePattern.ActivateCube(hit.transform, order + 1);
+            }
+        }
+        
         GameObject clone = Instantiate(bulletImpact, hit.point, Quaternion.identity);
         Destroy(clone, 3f);
         if (hit.rigidbody)

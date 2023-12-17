@@ -20,7 +20,7 @@ public class DoorPuzzle : MonoBehaviour
         {
             if (!button.GetComponent<DoorButton>().isButtonActivated) return;
             animator.SetBool(Door, true);
-            StartCoroutine(nameof(CloseDoor));
+            //StartCoroutine(nameof(CloseDoor));
             break;
         }
     }
