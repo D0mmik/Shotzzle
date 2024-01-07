@@ -20,3 +20,7 @@
 
 
 - melee attack
+
+- enemy
+
+- db mongodb na record
