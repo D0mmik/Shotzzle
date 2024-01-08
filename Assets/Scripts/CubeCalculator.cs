@@ -11,9 +11,11 @@ public class CubeCalculator : MonoBehaviour
     public TMP_Text numberText;
     public string randomNumber;
     public TMP_Text randomNumberText;
+    public GameObject bouncePad;
 
     private void Start()
     {
         randomNumberText.text = randomNumber = Random.Range(1000, 10000).ToString();
+        bouncePad.SetActive(false);
     }
 }

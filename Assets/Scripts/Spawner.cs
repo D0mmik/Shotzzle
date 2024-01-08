@@ -20,12 +20,11 @@ public class Spawner : MonoBehaviour
     {
         while (canSpawn)
         {
-            float rndX = Random.Range(0f, 25f);
-            float rndZ = Random.Range(0f, 8f);
-            var position = spawnPos.position;
-            GameObject ball = Instantiate(ballPrefab, new Vector3( position.x + rndX,position.y + rndZ, position.z), quaternion.identity);
+            float rndX = Random.Range(-1f, 25f);
+            Vector3 position = spawnPos.position;
+            GameObject ball = Instantiate(ballPrefab, new Vector3( position.x + rndX,position.y, position.z), quaternion.identity);
             ball.GetComponent<Rigidbody>().AddForce(0,0,-500);
-            Destroy(ball, 3);
+            Destroy(ball, 2);
             yield return new WaitForSeconds(0.5f);
         }
     }

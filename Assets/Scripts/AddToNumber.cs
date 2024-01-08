@@ -28,6 +28,6 @@ public class AddToNumber : MonoBehaviour
         if (cubeCalculator.number != cubeCalculator.randomNumber) return;
         
         spawner.canSpawn = false;
-        Debug.Log("WIN");
+        cubeCalculator.bouncePad.SetActive(true);
     }
 }

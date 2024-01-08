@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
 
 public class DoorPuzzle : MonoBehaviour
 {
@@ -16,13 +18,8 @@ public class DoorPuzzle : MonoBehaviour
 
     public void OpenDoor()
     {
-        foreach (GameObject button in buttonsGO)
-        {
-            if (!button.GetComponent<DoorButton>().isButtonActivated) return;
-            animator.SetBool(Door, true);
-            //StartCoroutine(nameof(CloseDoor));
-            break;
-        }
+        if (buttonsGO.Any(button => !button.GetComponent<DoorButton>().isButtonActivated)) return;
+        animator.SetBool(Door, true);
     }
 
     IEnumerator CloseDoor()
