@@ -18,6 +18,8 @@ public class MouseLook : MonoBehaviour
 
     void Update()
     {
+        if (GameManager.Instance.IsPaused) return;
+        
         Vector2 mouseAxis = playerInput.Player.Look.ReadValue<Vector2>() * (Time.deltaTime * sensitivity);
         
         yRotation += mouseAxis.x;

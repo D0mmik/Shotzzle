@@ -60,7 +60,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "QuitGame",
+                    "name": "Escape",
                     "type": "Button",
                     "id": "b6791afd-5bbd-43f1-b2fb-7ce2eb9dbc0f",
                     "expectedControlType": "Button",
@@ -187,7 +187,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "QuitGame",
+                    "action": "Escape",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

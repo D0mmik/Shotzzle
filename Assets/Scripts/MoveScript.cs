@@ -61,6 +61,7 @@ public class MoveScript : MonoBehaviour
 
     void Movement()
     {
+        if (GameManager.Instance.IsPaused) return;
         Vector3 moveDirection = player.forward * verticalInput + player.right * horizontalInput;
         rb.AddForce(moveDirection.normalized * (speed * 10f * (isGrounded ? 1 : 2)), ForceMode.Force);
     }

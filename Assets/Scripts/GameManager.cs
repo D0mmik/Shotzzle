@@ -8,18 +8,53 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] TMP_Text fpsCountText;
     InputSystem playerInput;
-    void Awake()
-    {
+    public bool IsPaused;
+    [SerializeField] private GameObject pauseMenu;
+    public static GameManager Instance { get; private set; }
+    private void Awake() 
+    { 
+        if (Instance != null && Instance != this)
+        { 
+            Destroy(this); 
+        } 
+        else 
+        { 
+            Instance = this; 
+        }
+        
         Application.targetFrameRate = 160;
         StartCoroutine(nameof(FpsCounter));
         playerInput = new InputSystem();
         playerInput.Player.Enable();
-        playerInput.Player.QuitGame.performed += QuitGame;
+        playerInput.Player.Escape.performed += PauseMenu;
+        pauseMenu.SetActive(false);
+    }
+    
+    private void OnDisable()
+    {
+        playerInput.Player.Escape.performed -= PauseMenu;
     }
 
-    private void QuitGame(InputAction.CallbackContext obj)
+    private void PauseMenu(InputAction.CallbackContext obj)
     {
-        Application.Quit();
+        Pause();
+    }
+
+    public void Pause()
+    {
+        IsPaused = !IsPaused;
+        pauseMenu.SetActive(IsPaused);
+        Cursor.lockState = IsPaused ? CursorLockMode.None : CursorLockMode.Locked;
+    }
+    
+    public void Settings()
+    {
+        Debug.Log("settings");
+    }
+    
+    public void Menu()
+    {
+        SceneManager.LoadScene("Menu");
     }
 
     void Start()
