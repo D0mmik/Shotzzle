@@ -57,7 +57,7 @@ public class CubePattern : MonoBehaviour
         Renderer component = cubeTransform.GetComponent<Renderer>();
         component.material = activatedMaterial;
         playerNumbers.Add(orderNum - 1);
-        StartCoroutine(DeActivateCube(component));
+        //StartCoroutine(DeActivateCube(component));
 
         if (playerNumbers.Count != cubeNumbers.Count) return;
         if (!playerNumbers.SequenceEqual(cubeNumbers))

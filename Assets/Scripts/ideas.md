@@ -20,7 +20,13 @@
 
 
 - melee attack
-
+## new ideas
 - enemy
-
 - db mongodb na record
+- pauseMenu
+- DeathScreen
+- Settings - sens
+- ted obri bouncepad a cervene kostky se blizi
+- velky vytah strileni, nekolik pater bouncepadu
+- rozmyslet ammo powerupy + reload
+- rozmyslet co v prvni mistnosti
