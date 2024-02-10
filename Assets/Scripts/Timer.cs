@@ -15,8 +15,11 @@ public class Timer : MonoBehaviour
     
     void DisplayTime(float timeToDisplay)
     {
-        float minutes = Mathf.FloorToInt(timeToDisplay / 60);  
-        float seconds = Mathf.FloorToInt(timeToDisplay % 60);
-        timerText.text = $"{minutes:00}:{seconds:00}";
+        var t0 = (int) timeToDisplay;
+        var m = t0/60;
+        var s = t0 - m*60;
+        var ms = (int)( (timeToDisplay - t0)*100);
+
+        timerText.text = $"{m:00}:{s:00}:{ms:00}";
     }
 }

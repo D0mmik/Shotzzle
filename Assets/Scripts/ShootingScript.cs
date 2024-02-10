@@ -11,6 +11,7 @@ public class ShootingScript : MonoBehaviour
     [SerializeField] int maxAmmo = 30;
     [SerializeField] GameObject bulletImpact;
     Transform shootPoint;
+    [SerializeField] ParticleSystem particleSystem;
     InputSystem playerInput;
     RaycastHit hit;
     Animator animationComponent;
@@ -53,6 +54,7 @@ public class ShootingScript : MonoBehaviour
         if (ammoCount == 0 || GameManager.Instance.IsPaused) return;
         animationComponent.SetTrigger("shooting");
         audioSource.Play();
+        particleSystem.Play();
         AddAmmo(-1);
         if (!Physics.Raycast(shootPoint.position, shootPoint.forward, out hit, 100f)) return;
         
@@ -78,15 +80,6 @@ public class ShootingScript : MonoBehaviour
                 int order = cubeInfo.cubeNumber;
                 cubePattern.ActivateCube(hit.transform, order + 1);
             }
-        }
-    
-        
-        GameObject clone = Instantiate(bulletImpact, hit.point, Quaternion.identity);
-        Destroy(clone, 3f);
-        if (hit.rigidbody)
-        {
-            //hit.rigidbody.maxLinearVelocity = 20;
-            //hit.rigidbody.AddForce(shootPoint.forward * 500);
         }
     }
 }

@@ -5,9 +5,20 @@ using UnityEngine;
 
 public class Sphere : MonoBehaviour
 {
+    private int sphereHealth = 2;
+    private Renderer renderer;
+    [SerializeField] Material secondMaterial;
+
+    private void OnEnable()
+    {
+        renderer = GetComponent<Renderer>();
+    }
+
     public void DestroySphere()
     {
-        Destroy(this.gameObject);
+        sphereHealth--;
+        if (sphereHealth == 0) Destroy(this.gameObject);
+        renderer.material = secondMaterial;
     }
 
 }
