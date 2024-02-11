@@ -62,24 +62,24 @@ public class ShootingScript : MonoBehaviour
         hit.transform.GetComponent<DoorButton>()?.Activate();
         hit.transform.GetComponent<DoorPuzzle>()?.OpenDoor();
         hit.transform.GetComponent<Sphere>()?.DestroySphere();
+        hit.transform.GetComponent<Fracture>()?.CauseFracture();
         
         CubeInfo cubeInfo = hit.transform.GetComponent<CubeInfo>();
-        if (cubeInfo != null)
+        if (cubeInfo == null) return;
+        
+        AddToNumber addToNumber = hit.transform.GetComponent<AddToNumber>();
+        if (addToNumber)
         {
-            AddToNumber addToNumber = hit.transform.GetComponent<AddToNumber>();
-            if (addToNumber)
-            {
-                hit.transform.GetComponent<AddToNumber>()?.AddNumber(cubeInfo.cubeNumber);
-                return;
-            }
+            hit.transform.GetComponent<AddToNumber>()?.AddNumber(cubeInfo.cubeNumber);
+            return;
+        }
 
-            if (!cubePattern.isPlayed)
-                cubePattern.StartCoroutinePatternGame();
-            else
-            {
-                int order = cubeInfo.cubeNumber;
-                cubePattern.ActivateCube(hit.transform, order + 1);
-            }
+        if (!cubePattern.isPlayed)
+            cubePattern.StartCoroutinePatternGame();
+        else
+        {
+            int order = cubeInfo.cubeNumber;
+            cubePattern.ActivateCube(hit.transform, order + 1);
         }
     }
 }

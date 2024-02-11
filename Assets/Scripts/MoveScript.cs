@@ -88,7 +88,7 @@ public class MoveScript : MonoBehaviour
                     other.gameObject.GetComponent<TeleportLocation>().teleportPosition.position;
                 break;
             case "Lava":
-                SceneManager.LoadScene("Game");
+                ResetScene();
                 break;
             
         }
@@ -102,6 +102,23 @@ public class MoveScript : MonoBehaviour
                 shootingScript.AddAmmo(10);
                 Destroy(other.gameObject);
                 break;
+            case "Lava":
+                ResetScene();
+                break;
+            case "GuidedSpawner":
+                GameObject[] guidedSpheres = GameObject.FindGameObjectsWithTag("Lava");
+                foreach (var item in guidedSpheres)
+                    Destroy(item);
+                break;
+            case "Border":
+                ResetScene();
+                break;
         }
+    }
+
+    private void ResetScene()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
     }
 }

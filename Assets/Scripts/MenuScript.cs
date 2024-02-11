@@ -5,9 +5,19 @@ using UnityEngine.SceneManagement;
 
 public class MenuScript : MonoBehaviour
 {
+    [SerializeField] GameObject buttonsContainer;
+    [SerializeField] GameObject levelsContainer;
+    [SerializeField] GameObject settingsContainer;
     public void Play()
     {
-        SceneManager.LoadScene("Game");
+        buttonsContainer.SetActive(false);
+        levelsContainer.SetActive(true);
+    }
+
+    public void Back()
+    {
+        levelsContainer.SetActive(false);
+        buttonsContainer.SetActive(true);
     }
 
     public void Settings()
