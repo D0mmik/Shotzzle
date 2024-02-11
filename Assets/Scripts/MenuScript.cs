@@ -18,17 +18,24 @@ public class MenuScript : MonoBehaviour
     {
         levelsContainer.SetActive(false);
         buttonsContainer.SetActive(true);
+        settingsContainer.SetActive(false);
     }
 
     public void Settings()
     {
-        Debug.Log("settings");
+        buttonsContainer.SetActive(false);
+        settingsContainer.SetActive(true);
     }
 
     public void Quit()
     {
         Application.Quit();
         Debug.Log("quit");
+    }
+
+    public void OpenLevel(string name)
+    {
+        SceneManager.LoadScene(name);
     }
 
 }

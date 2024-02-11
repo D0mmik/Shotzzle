@@ -18,6 +18,7 @@ public class MoveScript : MonoBehaviour
 
     void Awake()
     {
+        AudioListener.volume = Settings.volume;
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 

@@ -3,6 +3,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 public class ShootingScript : MonoBehaviour
 {
@@ -11,12 +12,14 @@ public class ShootingScript : MonoBehaviour
     [SerializeField] int maxAmmo = 30;
     [SerializeField] GameObject bulletImpact;
     Transform shootPoint;
-    [SerializeField] ParticleSystem particleSystem;
+    [SerializeField] ParticleSystem particleSystemComponent;
     InputSystem playerInput;
     RaycastHit hit;
     Animator animationComponent;
     AudioSource audioSource;
     private CubePattern cubePattern;
+    private static readonly int Shooting = Animator.StringToHash("shooting");
+
     void Awake()
     {
         playerInput = new InputSystem();
@@ -52,17 +55,26 @@ public class ShootingScript : MonoBehaviour
     void Shoot(InputAction.CallbackContext obj)
     {
         if (ammoCount == 0 || GameManager.Instance.IsPaused) return;
-        animationComponent.SetTrigger("shooting");
+        animationComponent.SetTrigger(Shooting);
         audioSource.Play();
-        particleSystem.Play();
+        particleSystemComponent.Play();
         AddAmmo(-1);
-        if (!Physics.Raycast(shootPoint.position, shootPoint.forward, out hit, 100f)) return;
+        if (!Physics.Raycast(shootPoint.position, shootPoint.forward, out hit, 200f)) return;
+        
+        if (hit.transform.gameObject.CompareTag("Fake"))
+            Destroy(hit.transform.gameObject);
+
+        if (hit.transform.gameObject.CompareTag("RigidbodyExplosive"))
+        {
+            if (!hit.rigidbody) return;
+            hit.rigidbody.maxLinearVelocity = 20;
+            hit.rigidbody.AddForce(shootPoint.forward * 500);
+        }
         
         hit.transform.GetComponent<JumpPad>()?.ActivateJumpPad();
         hit.transform.GetComponent<DoorButton>()?.Activate();
         hit.transform.GetComponent<DoorPuzzle>()?.OpenDoor();
         hit.transform.GetComponent<Sphere>()?.DestroySphere();
-        hit.transform.GetComponent<Fracture>()?.CauseFracture();
         
         CubeInfo cubeInfo = hit.transform.GetComponent<CubeInfo>();
         if (cubeInfo == null) return;

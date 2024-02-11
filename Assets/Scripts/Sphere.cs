@@ -7,7 +7,7 @@ using Random = UnityEngine.Random;
 public class Sphere : MonoBehaviour
 {
     private int sphereHealth = 2;
-    private Renderer renderer;
+    private Renderer rendererComponent;
     [SerializeField] Material secondMaterial;
     [SerializeField] Material mainMaterial;
     public bool moveToPlayer;
@@ -16,7 +16,7 @@ public class Sphere : MonoBehaviour
 
     private void OnEnable()
     {
-        renderer = GetComponent<Renderer>();
+        rendererComponent = GetComponent<Renderer>();
         player = GameObject.FindWithTag("Player");
         spawnPos = GameObject.FindWithTag("GuidedSpawner");
     }
@@ -32,8 +32,7 @@ public class Sphere : MonoBehaviour
                 Vector3 position = spawnPos.transform.position;
                 transform.position = new Vector3(position.x + rndX, position.y, position.z);
                 sphereHealth = 2;
-                renderer.material = mainMaterial;
-                Debug.Log("why");
+                rendererComponent.material = mainMaterial;
             }
             else
             {
@@ -42,13 +41,13 @@ public class Sphere : MonoBehaviour
         }
         else
         {
-            renderer.material = secondMaterial;
+            rendererComponent.material = secondMaterial;
         }
     }
 
     private void FixedUpdate()
     {
         if (!moveToPlayer) return;
-        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 0.20f);
+        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, 0.23f);
     }
 }

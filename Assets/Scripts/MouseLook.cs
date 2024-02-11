@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class MouseLook : MonoBehaviour
 {
-    [SerializeField] float sensitivity = 10;
     InputSystem playerInput;
     float xRotation;
     float yRotation;
@@ -20,7 +19,7 @@ public class MouseLook : MonoBehaviour
     {
         if (GameManager.Instance.IsPaused) return;
         
-        Vector2 mouseAxis = playerInput.Player.Look.ReadValue<Vector2>() * (Time.deltaTime * sensitivity);
+        Vector2 mouseAxis = playerInput.Player.Look.ReadValue<Vector2>() * (Time.deltaTime * Settings.sensitivity * 20);
         
         yRotation += mouseAxis.x;
 

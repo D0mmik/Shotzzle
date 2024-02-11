@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     InputSystem playerInput;
     public bool IsPaused;
     [SerializeField] private GameObject pauseMenu;
+    [SerializeField] private GameObject settings;
     public static GameManager Instance { get; private set; }
     private void Awake() 
     { 
@@ -44,12 +45,20 @@ public class GameManager : MonoBehaviour
     {
         IsPaused = !IsPaused;
         pauseMenu.SetActive(IsPaused);
+        settings.SetActive(false);
         Cursor.lockState = IsPaused ? CursorLockMode.None : CursorLockMode.Locked;
     }
     
     public void Settings()
     {
-        Debug.Log("settings");
+        pauseMenu.SetActive(false);
+        settings.SetActive(true);
+    }
+
+    public void Back()
+    {
+        settings.SetActive(false);
+        pauseMenu.SetActive(true);
     }
     
     public void Menu()

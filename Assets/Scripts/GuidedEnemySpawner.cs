@@ -19,7 +19,8 @@ public class GuidedEnemySpawner : MonoBehaviour
             float rndX = Random.Range(-1f, 25f);
             Vector3 position = spawnPos.position;
             GameObject enemyClone = Instantiate(enemy, new Vector3( position.x + rndX,position.y, position.z), Quaternion.identity);
-            enemyClone.GetComponent<Sphere>().moveToPlayer = true;
+            Sphere sphere = enemyClone.GetComponent<Sphere>();
+            sphere.moveToPlayer = true;
         }
         
     }

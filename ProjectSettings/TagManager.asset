@@ -11,6 +11,8 @@ TagManager:
   - GuidedSpawner
   - Border
   - Projectile
+  - Fake
+  - RigidbodyExplosive
   layers:
   - Default
   - TransparentFX
