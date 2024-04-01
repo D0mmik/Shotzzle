@@ -19,6 +19,7 @@ public class ShootingScript : MonoBehaviour
     AudioSource audioSource;
     private CubePattern cubePattern;
     private static readonly int Shooting = Animator.StringToHash("shooting");
+    private int differenceCount;
 
     void Awake()
     {
@@ -70,7 +71,15 @@ public class ShootingScript : MonoBehaviour
             hit.rigidbody.maxLinearVelocity = 20;
             hit.rigidbody.AddForce(shootPoint.forward * 500);
         }
-        
+
+        if (hit.transform.gameObject.CompareTag("Difference"))
+        {
+            Debug.Log("difference");
+            differenceCount++;
+            if (differenceCount > 5) return;
+            GameObject.FindGameObjectWithTag("DifferenceDoor").SetActive(true);
+        }
+
         hit.transform.GetComponent<JumpPad>()?.ActivateJumpPad();
         hit.transform.GetComponent<DoorButton>()?.Activate();
         hit.transform.GetComponent<DoorPuzzle>()?.OpenDoor();
