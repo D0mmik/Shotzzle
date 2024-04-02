@@ -55,7 +55,7 @@ public class ShootingScript : MonoBehaviour
 
     void Shoot(InputAction.CallbackContext obj)
     {
-        if (ammoCount == 0 || GameManager.Instance.IsPaused) return;
+        if (ammoCount == 0 || GameManager.Instance.IsPaused || GameManager.Instance.deathOrFinished) return;
         animationComponent.SetTrigger(Shooting);
         audioSource.Play();
         particleSystemComponent.Play();

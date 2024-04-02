@@ -16,11 +16,50 @@ public class Settings : MonoBehaviour
     public static float volume;
     [SerializeField] TMP_Text sensText;
     [SerializeField] TMP_Text volumeText;
+    [SerializeField] TMP_Dropdown resolutionDP;
+    Resolution[] resolutions;
+    List<Resolution> filteredResolutions;
+    float currentRefreshRate;
+    int currentResIndex = 0;
     
     private void Awake()
     {
         sensSlider.value = sensitivity = PlayerPrefs.HasKey(sensKey) ? PlayerPrefs.GetFloat(sensKey) : 1;
         volumeSlider.value = volume = PlayerPrefs.HasKey(volumeKey) ? PlayerPrefs.GetFloat(volumeKey) : 1;
+
+        resolutions = Screen.resolutions;
+        filteredResolutions = new List<Resolution>();
+        
+        resolutionDP.ClearOptions();
+        currentRefreshRate = Screen.currentResolution.refreshRate;
+
+        for (int i = 0; i < resolutions.Length; i++)
+        {
+            if (resolutions[i].refreshRate == currentRefreshRate)
+            {
+                filteredResolutions.Add(resolutions[i]);
+            }
+        }
+
+        List<string> options = new List<string>();
+        for (int i = 0; i < filteredResolutions.Count; i++)
+        {
+            string resolutionOption = filteredResolutions[i].width + "x" + filteredResolutions[i].height + " " +
+                                      filteredResolutions[i].refreshRate + " Hz";
+            options.Add(resolutionOption);
+            if (filteredResolutions[i].width == Screen.width && filteredResolutions[i].height == Screen.height)
+                currentResIndex = i;
+        }
+        
+        resolutionDP.AddOptions(options);
+        resolutionDP.value = currentResIndex;
+        resolutionDP.RefreshShownValue();
+    }
+
+    public void SetResolution(int resIndex)
+    {
+        Resolution resolution = filteredResolutions[resIndex];
+        Screen.SetResolution(resolution.width, resolution.height, FullScreenMode.MaximizedWindow, resolution.refreshRate);
     }
 
     public void ChangeSensitivity()

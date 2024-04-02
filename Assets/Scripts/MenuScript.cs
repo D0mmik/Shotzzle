@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,9 +9,12 @@ public class MenuScript : MonoBehaviour
     [SerializeField] GameObject buttonsContainer;
     [SerializeField] GameObject levelsContainer;
     [SerializeField] GameObject settingsContainer;
+    [SerializeField] GameObject leaderboardContainer;
+
     public void Play()
     {
         buttonsContainer.SetActive(false);
+        leaderboardContainer.SetActive(false);
         levelsContainer.SetActive(true);
     }
 
@@ -19,12 +23,23 @@ public class MenuScript : MonoBehaviour
         levelsContainer.SetActive(false);
         buttonsContainer.SetActive(true);
         settingsContainer.SetActive(false);
+        leaderboardContainer.SetActive(false);
     }
 
     public void Settings()
     {
         buttonsContainer.SetActive(false);
         settingsContainer.SetActive(true);
+        leaderboardContainer.SetActive(false);
+    }
+
+    public void OpenLeaderboard()
+    {
+        Leaderboard.Instance.GetLeaderboard();
+        leaderboardContainer.SetActive(true);
+        buttonsContainer.SetActive(false);
+        settingsContainer.SetActive(false);
+        Leaderboard.Instance.RenderTimes(0);
     }
 
     public void Quit()
@@ -35,6 +50,9 @@ public class MenuScript : MonoBehaviour
 
     public void OpenLevel(string name)
     {
+        Time.timeScale = 1;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         SceneManager.LoadScene(name);
     }
 
